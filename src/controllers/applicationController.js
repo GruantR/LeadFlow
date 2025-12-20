@@ -1,6 +1,7 @@
 const Application = require('../models/Application');
 const ApiError = require('../utils/ApiError');
 const { Op } = require('sequelize');
+const { telegramService } = require('../telegram');
 
 /**
  * Создание новой заявки (публичный эндпоинт)
@@ -35,6 +36,11 @@ const createApplication = async (req, res, next) => {
       ip_address: ipAddress,
       user_agent: userAgent,
       status: 'new'
+    });
+
+    // Отправляем уведомление в Telegram (не блокируем ответ, если не удалось)
+    telegramService.sendApplicationNotification(application).catch(error => {
+      console.error('Не удалось отправить уведомление в Telegram:', error);
     });
 
     res.status(201).json({
