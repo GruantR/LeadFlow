@@ -19,7 +19,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: 'https://leadflow-9v3y.onrender.com/api',
+        url: 'https://leadflow-9v3y.onrender.com',
         description: 'Production server',
       },
       {
