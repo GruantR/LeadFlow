@@ -5,9 +5,17 @@
   "main": "src/app.js",
   "scripts": {
     "start": "node src/app.js",
+    "start:dev": "cross-env NODE_ENV=development node src/app.js",
+    "start:prod": "cross-env NODE_ENV=production node src/app.js",
     "dev": "nodemon src/app.js",
+    "dev:development": "cross-env NODE_ENV=development nodemon src/app.js",
+    "dev:prod": "cross-env NODE_ENV=production nodemon src/app.js",
     "migrate": "node src/config/syncDatabase.js",
-    "seed": "node src/config/seedDatabase.js"
+    "migrate:dev": "cross-env NODE_ENV=development node src/config/syncDatabase.js",
+    "migrate:prod": "cross-env NODE_ENV=production node src/config/syncDatabase.js",
+    "seed": "node src/config/seedDatabase.js",
+    "seed:dev": "cross-env NODE_ENV=development node src/config/seedDatabase.js",
+    "seed:prod": "cross-env NODE_ENV=production node src/config/seedDatabase.js"
   },
   "keywords": [
     "api",
@@ -34,6 +42,7 @@
     "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "nodemon": "^3.0.2"
   }
 }

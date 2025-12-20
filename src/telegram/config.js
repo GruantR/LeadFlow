@@ -2,7 +2,7 @@
  * Конфигурация Telegram бота
  */
 
-require('dotenv').config();
+require('../config/env');
 
 const config = {
   token: process.env.TELEGRAM_BOT_TOKEN,

@@ -9,12 +9,25 @@ REST API для системы обработки заявок на Node.js + Ex
 npm install
 ```
 
-2. Создайте файл `.env` на основе `.env.example` и заполните переменные окружения:
-```bash
-cp .env.example .env
-```
+2. Настройте переменные окружения:
+   
+   Проект использует отдельные файлы конфигурации для разных окружений:
+   - `.env.development` - для разработки
+   - `.env.production` - для production
+   
+   Скопируйте и заполните соответствующий файл:
+   ```bash
+   # Для development
+   cp .env.development .env.development
+   
+   # Для production
+   cp .env.production .env.production
+   ```
+   
+   **Важно:** Файл конфигурации выбирается автоматически на основе переменной `NODE_ENV`. 
+   Если `NODE_ENV` не установлена, используется `development` по умолчанию.
 
-3. Создайте базу данных PostgreSQL и укажите параметры подключения в `.env`
+3. Создайте базу данных PostgreSQL и укажите параметры подключения в соответствующем `.env` файле
 
 4. Запустите миграции для создания таблиц:
 ```bash
@@ -28,15 +41,46 @@ npm run seed
 
 ## Запуск
 
-Development режим:
+### Development режим:
 ```bash
+# С nodemon (автоперезагрузка при изменениях)
+npm run dev:development
+# или просто
 npm run dev
+
+# Без nodemon
+npm run start:dev
 ```
 
-Production режим:
+### Production режим:
 ```bash
+# Запуск production сервера
+npm run start:prod
+
+# Или через стандартную команду (если NODE_ENV установлен в системе)
 npm start
 ```
+
+### Дополнительные команды:
+
+**Миграции базы данных:**
+```bash
+npm run migrate:dev    # Development окружение
+npm run migrate:prod   # Production окружение
+npm run migrate        # Использует NODE_ENV из системы или development по умолчанию
+```
+
+**Заполнение базы данных (сиды):**
+```bash
+npm run seed:dev       # Development окружение
+npm run seed:prod      # Production окружение
+npm run seed           # Использует NODE_ENV из системы или development по умолчанию
+```
+
+**Примечание:** При запуске приложение автоматически загрузит конфигурацию из соответствующего файла:
+- `NODE_ENV=development` → `.env.development`
+- `NODE_ENV=production` → `.env.production`
+- Если файл не найден, используется стандартный `.env` (fallback)
 
 ## API Документация
 
@@ -47,7 +91,9 @@ npm start
 
 ```
 src/
-├── config/          # Конфигурация БД
+├── config/          # Конфигурация (БД, env, swagger)
+│   ├── env.js       # Загрузчик конфигурации окружения
+│   └── database.js  # Конфигурация подключения к БД
 ├── controllers/     # Контроллеры
 ├── middleware/      # Middleware (auth, error handling, validation)
 ├── models/          # Sequelize модели
@@ -79,7 +125,7 @@ src/
 2. Получите токен бота
 3. Добавьте бота в вашу Telegram-группу
 4. Получите Chat ID группы (можно использовать бота [@userinfobot](https://t.me/userinfobot) или [@getidsbot](https://t.me/getidsbot))
-5. Укажите токен и Chat ID в файле `.env`:
+5. Укажите токен и Chat ID в соответствующем файле `.env.development` или `.env.production`:
    ```
    TELEGRAM_BOT_TOKEN=your_bot_token
    TELEGRAM_CHAT_ID=your_chat_id

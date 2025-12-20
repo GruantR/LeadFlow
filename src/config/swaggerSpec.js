@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('./env');
 const swaggerJsdoc = require('swagger-jsdoc');
 
 const PORT = process.env.PORT || 3000;
@@ -18,6 +18,10 @@ const swaggerOptions = {
       }
     },
     servers: [
+      {
+        url: 'https://leadflow-9v3y.onrender.com/api',
+        description: 'Production server',
+      },
       {
         url: `http://localhost:${PORT}`,
         description: 'Development server'
