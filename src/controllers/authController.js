@@ -3,25 +3,6 @@ const User = require('../models/User');
 const ApiError = require('../utils/ApiError');
 
 /**
- * Регистрация нового пользователя (только для разработки)
- */
-const register = async (req, res, next) => {
-  try {
-    const { email, password, role } = req.body;
-
-    const result = await AuthService.register(email, password, role);
-
-    res.status(201).json({
-      success: true,
-      message: 'Пользователь успешно зарегистрирован',
-      data: result
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-/**
  * Вход пользователя
  */
 const login = async (req, res, next) => {
@@ -63,7 +44,6 @@ const getMe = async (req, res, next) => {
 };
 
 module.exports = {
-  register,
   login,
   getMe
 };

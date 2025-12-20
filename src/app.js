@@ -8,6 +8,7 @@ const swaggerUi = require('swagger-ui-express');
 const sequelize = require('./config/database');
 const swaggerSpec = require('./config/swaggerSpec');
 const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
+const { initialize: initializeTelegramBot } = require('./telegram');
 
 // Роуты
 const authRoutes = require('./routes/auth');
@@ -54,6 +55,9 @@ async function startServer() {
   try {
     await sequelize.authenticate();
     console.log('✓ Подключение к базе данных установлено.');
+
+    // Инициализация Telegram бота
+    initializeTelegramBot();
 
     app.listen(PORT, () => {
       console.log(`✓ Сервер запущен на порту ${PORT}`);

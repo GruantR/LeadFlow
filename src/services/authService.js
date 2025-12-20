@@ -8,39 +8,6 @@ const ApiError = require('../utils/ApiError');
  */
 class AuthService {
   /**
-   * Регистрация нового пользователя
-   */
-  static async register(email, password, role = 'admin') {
-    // Проверяем, существует ли пользователь
-    const existingUser = await User.findOne({ where: { email } });
-    if (existingUser) {
-      throw ApiError.conflict('Пользователь с таким email уже существует');
-    }
-
-    // Хэшируем пароль
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Создаем пользователя
-    const user = await User.create({
-      email,
-      password: hashedPassword,
-      role
-    });
-
-    // Генерируем токен
-    const token = this.generateToken(user);
-
-    return {
-      user: {
-        id: user.id,
-        email: user.email,
-        role: user.role
-      },
-      token
-    };
-  }
-
-  /**
    * Вход пользователя
    */
   static async login(email, password) {
